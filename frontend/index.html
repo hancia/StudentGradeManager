@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Grade Manager</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <meta name="viewport" content="width=500, initial-scale=1, maximum-scale=3.0, minimum-scale=0.1">
+</head>
+<body>
+<header id="mainheader">
+    <h1 class="mainheadertext"><img src="icon.png" width="50" height="45" alt="None"></h1>
+    <h1 class="mainheadertext">Student Grade Manager</h1>
+</header>
+<script src="jquery.js"></script>
+<script src="knockout.js"></script>
+<script src="knockout.mapping.js"></script>
+<script src="script.js"></script>
+<div id="content">
+    <div id="menu">
+        <nav>
+            <ol>
+                <li><a href="#students">Students</a></li>
+                <li><a href="#courses">Courses</a></li>
+            </ol>
+        </nav>
+    </div>
+    <div id="separator"></div>
+    <div id="art">
+        <article id=students>
+            <header><h2> Students </h2></header>
+            <form>
+                <table>
+                    <thead>
+                    <tr>
+                        <th><input type="text" value="Index"></th>
+                        <th><input type="text" value="First Name"></th>
+                        <th><input type="text" value="Last Name"></th>
+                        <th><input type="text" value="Birthday"></th>
+                        <th id="grades_btn"><input type="text" value="Grades" readonly></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tr class="search">
+                        <th><input type="search" data-bind="textInput: findStudent.index" placeholder="Index"></th>
+                        <th><input type="search" data-bind="textInput: findStudent.firstName"
+                                   placeholder="First Name"></th>
+                        <th><input type="search" data-bind="textInput: findStudent.lastName" placeholder="Last Name">
+                        </th>
+                        <th><input type="date" data-bind="textInput: findStudent.birthday">
+                            <select data-bind="options: compareValue,
+                            optionsText: function(item) {
+                              return item.name;
+                            },
+                            optionsValue: function(item) {
+                              return item.value;
+                             },
+                             optionsCaption: '-',
+                             value: findStudent.birthdayCompare">
+                            </select></th>
+                        <th><input type="text" value="Grades" readonly></th>
+                        <th></th>
+                    </tr>
+                    <tbody data-bind="foreach: students">
+                    <tr>
+                        <th><input data-bind="value: index" type="number" placeholder="Index" min="0" required readonly>
+                        </th>
+                        <th><input data-bind="value: firstName" type="text" placeholder="First Name" required></th>
+                        <th><input data-bind="value: lastName" type="text" placeholder="Last Name" required></th>
+                        <th><input data-bind="value: birthday" type="date" required></th>
+                        <th><input type="button" onclick="location.href='#grades'" data-bind="click: $parent.getGrades"
+                                   value="Grades"></th>
+                        <th>
+                            <input type="button" data-bind="click: $parent.removeStudent" value="Delete"></th>
+                    </tr>
+                    </tbody>
+                    <tr class="newrow">
+                        <th><input type="number" placeholder="Index" min="0" required readonly></th>
+                        <th><input data-bind="value: student.firstName" type="text" placeholder="First Name"
+                                   required></th>
+                        <th><input data-bind="value: student.lastName" type="text" placeholder="Last Name" required>
+                        </th>
+                        <th><input data-bind="value: student.birthday" type="date" required></th>
+                        <th><input type="button" value="Grades" disabled></th>
+                        <th><input type="button" data-bind="click: postStudent" value="Save"></th>
+                    </tr>
+                </table>
+            </form>
+        </article>
+        <article id=courses>
+            <header><h2> Courses </h2></header>
+            <form>
+                <table>
+                    <thead>
+                    <tr>
+                        <th><input type="text" value="Id"></th>
+                        <th><input type="text" value="Name"></th>
+                        <th><input type="text" value="Lecturer"></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tr class="search">
+                        <th><input type="search" data-bind="textInput: findCourse.id" placeholder="Id"></th>
+                        <th><input type="search" data-bind="textInput: findCourse.name" placeholder="Name"></th>
+                        <th><input type="search" data-bind="textInput: findCourse.lecturer" placeholder="Lecturer">
+                        </th>
+                        <th></th>
+                    </tr>
+                    <tbody data-bind="foreach: courses">
+                    <tr>
+                        <th><input data-bind="value: id" type="text" placeholder="Id" required readonly></th>
+                        <th><input data-bind="value: name" type="text" placeholder="Name" required></th>
+                        <th><input data-bind="value: lecturer" type="text" placeholder="Lecturer" required></th>
+                        <th><input data-bind="click: $parent.removeCourse" type="button" value="Delete"></th>
+                    </tr>
+                    </tbody>
+                    <tr class="newrow">
+                        <th><input type="number" placeholder="Id" min="0" readonly></th>
+                        <th><input data-bind="value: course.name" type="text" placeholder="Name" required></th>
+                        <th><input data-bind="value: course.lecturer" type="text" placeholder="Lecturer" required>
+                        </th>
+                        <th><input type="button" data-bind="click: postCourse" value="Save"></th>
+                    </tr>
+                </table>
+            </form>
+        </article>
+        <article id=grades data-bind="if: gradeMetadata.student">
+            <header><h2> Grades of <input type="text" data-bind="value: gradeMetadata.studentName" readonly></h2>
+            </header>
+            <form>
+                <table>
+                    <thead>
+                    <tr>
+                        <th><input type="text" value="Id"></th>
+                        <th><input type="text" value="Value"></th>
+                        <th><input type="text" value="Date"></th>
+                        <th><input type="text" value="Course"></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tr class="search">
+                        <th><input type="search" data-bind="textInput: findGrade.id" placeholder="Id"></th>
+                        <th><input type="search" data-bind="textInput: findGrade.value" placeholder="Value">
+                            <select data-bind="options: compareValue,
+                            optionsText: function(item) {
+                              return item.name;
+                            },
+                            optionsValue: function(item) {
+                              return item.value;
+                            },
+                             optionsCaption: '-',
+                             value: findGrade.valueCompare">
+                            </select></th>
+                        <th><input type="date" data-bind="textInput: findGrade.date">
+                            <select data-bind="options: compareValue,
+                            optionsText: function(item) {
+                              return item.name;
+                            },
+                            optionsValue: function(item) {
+                              return item.value;
+                            },
+                             optionsCaption: '-',
+                             value: findGrade.dateCompare">
+                            </select></th>
+                        <th><select data-bind="options: courses_select,
+                      optionsText: function(item) {
+                        return item.name;
+                      },
+                      optionsValue: function(item) {
+                        return item;
+                      },
+                      optionsCaption: '-',
+                      value: findGrade.course">
+                        </select></th>
+                        <th></th>
+                    </tr>
+                    <tbody data-bind="foreach: grades">
+                    <tr>
+                        <th><input data-bind="value: id" type="number" placeholder="Id" min="0" required
+                                   readonly></th>
+                        <th><input data-bind="value: value" type="number" placeholder="Value" min="1" max="5" step="0.5"
+                                   required></th>
+                        <th><input data-bind="value: date" type="date" value="2020-01-01" required></th>
+                        <th><select data-bind="options: $parent.courses_select,
+                            optionsText: function(item) {
+                              return item.name;
+                            },
+                            optionsValue: function(item) {
+                              return item.id;
+                            },
+                            value: course.id">
+                        </select></th>
+                        <th><input data-bind="click: $parent.removeGrade" type="button" value="Delete"></th>
+                    </tr>
+                    </tbody>
+                    <tr class="newrow">
+                        <th><input type="number" placeholder="Id" min="0" readonly></th>
+                        <th><input data-bind="value: gradeMetadata.value" type="number" min="1" max="5" step="0.5"
+                                   placeholder="Value" required></th>
+                        <th><input data-bind="value: gradeMetadata.date" type="date" required></th>
+                        <th><select data-bind="options: courses_select,
+                      optionsText: function(item) {
+                        return item.name;
+                      },
+                      optionsValue: function(item) {
+                        return item;
+                      },
+                      value: gradeMetadata.course">
+                        </select></th>
+                        <th><input type="button" data-bind="click: postGrade" value="Save"></th>
+                    </tr>
+                </table>
+            </form>
+        </article>
+    </div>
+</div>
+<footer>
+    <p> Hanna Klimczak </p>
+    <a href="https://fc.put.poznan.pl/">Wydział informatyki Politechniki Poznańskiej</a>
+</footer>
+</body>
+</html>

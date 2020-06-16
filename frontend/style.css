@@ -1,0 +1,179 @@
+article{
+    display: none;
+}
+title{
+    display: none;
+}
+
+*{
+    margin: 0 0 0 0;
+}
+
+article:target{
+    display : block;
+}
+
+ol{
+    list-style-type: none;
+    width: 100%;
+}
+html, body{
+    height: 100%;
+}
+
+body{
+    background-color: #A8D0E6;
+    color: #46434D;
+    display: flex;
+    flex-flow: column;
+}
+
+header{
+    font-family: Roboto, serif;
+    font-size: 18px;
+    text-align: left;
+}
+
+nav{
+    width: 100%;
+    text-align: center;
+    background-color: #F8E9A1;
+}
+
+#menu{
+    float: left;
+    height: 80px;
+    align-items: center;
+    flex: 1 1 20%;
+}
+
+th, td{
+    border: 3px solid white;
+}
+
+tr:nth-child(even) {background-color: #91B4C7;}
+tr:hover {background-color: #F8E9A1;}
+
+.search{
+    background-color: #7B98A8;
+}
+input, select{
+    font-family: inherit;
+    color: inherit;
+    border: none;
+    background-color: inherit;
+}
+
+input:invalid, input:required {
+    border-color: #C45656;
+}
+
+input[type=button]{
+    background-color: #F8E9A1;
+}
+
+input[type=button]:disabled{
+    background-color: #C9BE83;
+}
+
+#mainheader{
+    background-image: linear-gradient(#C45656, #F76C6C);
+    color: whitesmoke;
+    text-align: left;
+    height: 100px;
+    align-items: flex-end;
+    display: flex;
+    flex-flow: row;
+}
+
+.mainheadertext{
+    float: left;
+}
+
+#content{
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 2 auto;
+}
+
+footer{
+    background-image: linear-gradient(#374785, #24305E);
+    color: lightgray;
+    height: 80px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+a:link {
+    color: lightslategray;
+    text-decoration: none;
+}
+
+a:visited {
+    color: lightslategray;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#art{
+    flex: 1 0 80%;
+}
+table{
+    font-family: "Times New Roman", serif;
+    font-size: medium;
+    text-align: center;
+    vertical-align: center;
+    border-collapse: collapse;
+    display: table;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+input, select{
+    width: 100%;
+}
+
+thead{
+    visibility: hidden;
+}
+
+@media print {
+    #mainheader, #menu, footer, .newrow, #grades_btn, input[type=button] {
+        display: none;
+    }
+
+    * {
+        color: black;
+        background-color: white;
+    }
+    thead{
+        visibility: inherit;
+    }
+    .search{
+        display: none;
+    }
+
+    select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border: none;
+        color: black;
+        background-color: white;
+    }
+
+    th, td {
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+    }
+}
